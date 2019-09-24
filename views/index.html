@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>FSAE Race Car Data Logger</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <h1>Data Logger for Formula SAE Race Car</h1>
+    <img src="fsaecar.jpg" name="carpicture" alt="Fsae car in tilt test"></img>
+    <div class="formContainer">
+      <div id="aggregate-table" class"atable"></div>
+      <div id="readings-table" class="rtable"></div>
+      <form action="" class="nameForm">
+        <label>What is the car's current speed (in MPH)?
+          <input type="number" id="speed" value="0">
+        </label>
+        <label>What is the current wheel angular velocity (in RPM)?
+          <input type="number" id="rpm" value="0">
+        </label>
+        <label>What is the current gear?
+          <select id="gear" size="8" multiple>
+              <option value="Reverse">Reverse</option>
+              <option value="Park">Park</option>
+              <option value="1st Gear">1st Gear</option>
+              <option value="2nd Gear">2nd Gear</option>
+              <option value="3rd Gear">3rd Gear</option>
+              <option value="4th Gear">4th Gear</option>
+              <option value="5th Gear">5th Gear</option>
+              <option value="6th Gear">6th Gear</option>
+            </select>
+        </label>
+        <button>submit</button>
+      </form>
+    </div>   
+  </body>
+  <script src="js/scripts.js"></script>
+  <link href="js/tabulator-master/dist/css/tabulator.css" rel="stylesheet">
+  <link href="js/tabulator-master/dist/css/tabulator_site.min.css" rel="stylesheet">
+  <script type="text/javascript" src="js/tabulator-master/dist/js/tabulator.js"></script>
+</html>
