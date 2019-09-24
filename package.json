@@ -19,8 +19,17 @@
     "start": "node server.improved.js"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "body-parser": "^1.19.0",
+    "bulma": "^0.7.5",
+    "compression": "^1.7.4",
+    "connect-timeout": "^1.9.0",
+    "cookie-parser": "^1.4.4",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.1",
+    "helmet": "^3.21.1",
     "mime": "^2.4.4",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
     "tabulator-tables": "^4.4.1"
   }
 }

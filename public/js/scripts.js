@@ -76,6 +76,11 @@ const submit = function( e ) {
 }
 
 window.onload = function() {
+    fetch('data/carreadings.json')
+    .then(response => response.json())
+    .then(data =>{
+        this.document.getElementById("intro").innerHTML = "Welcome to the data logger, " + data.user.displayName
+    })
     const button = document.querySelector( 'button' )
     button.onclick = submit
     getReadings()
