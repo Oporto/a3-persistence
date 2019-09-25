@@ -1,5 +1,7 @@
 ## Data Logger for Formula SAE Race Car
 
+link: http://a3-pedrodevasconcellosporto.glitch.me
+
 This project is the continuation of the prototype website/view for the formula SAE team at WPI. It focuses on the logging and display of data for the cars performance. The data it gathers is the cars speed, wheel speed (in rotations per minute), current gear, and the date time for the logging. The idea is that the app can accumulate multiple data readings for all gears (Reverse, Park, 1st->6th Gears) and display both the individual records (bottom table) and the aggregate average speed for each gear. All this data is crucial for the engineering team to understand the cars system as it is being developed and to make critical adaptations to the drivetrain system. For a race car, it is important to optimize the speed it goes at each gear and when the gear changes occur (determined by a very high or low wheel rpm). With more advanced calculations, contrasting the wheel speed and car speed data can also inform how much slip there is on the wheels and when, which is an effect that should be minimized through changes accross the car's systems. 
 
 The website uses a Google OAuth system (use your personal google account or email: fsaelogger@gmail.com password: datafsae19!). The website uses cookies and maintains your sessions even if you close your browser(usually if you are using Chrome). The logout functionality is also implemented and it has a button on the main page for it.
