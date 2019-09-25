@@ -22,7 +22,7 @@
     },
     {
       "gear": "4th Gear",
-      "avgspeed": 42.4
+      "avgspeed": 43
     },
     {
       "gear": "5th Gear",
@@ -87,12 +87,6 @@
       "rpm": "930",
       "gear": "4th Gear",
       "datetime": "2019-09-09T01:58:02.926Z"
-    },
-    {
-      "speed": "40",
-      "rpm": "500",
-      "gear": "4th Gear",
-      "datetime": "2019-09-09T02:01:01.548Z"
     },
     {
       "speed": "45",

@@ -1,74 +1,23 @@
-Assignment 3 - Persistence: Two-tier Web Application with Flat File Database, Express server, and CSS template
-===
+## Data Logger for Formula SAE Race Car
 
-Due: September 16th, by 11:59 AM.
+This project is the continuation of the prototype website/view for the formula SAE team at WPI. It focuses on the logging and display of data for the cars performance. The data it gathers is the cars speed, wheel speed (in rotations per minute), current gear, and the date time for the logging. The idea is that the app can accumulate multiple data readings for all gears (Reverse, Park, 1st->6th Gears) and display both the individual records (bottom table) and the aggregate average speed for each gear. All this data is crucial for the engineering team to understand the cars system as it is being developed and to make critical adaptations to the drivetrain system. For a race car, it is important to optimize the speed it goes at each gear and when the gear changes occur (determined by a very high or low wheel rpm). With more advanced calculations, contrasting the wheel speed and car speed data can also inform how much slip there is on the wheels and when, which is an effect that should be minimized through changes accross the car's systems. 
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), a flat file database suitable for small applications (lowdb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+The website uses a Google OAuth system (use your personal google account or email: fsaelogger@gmail.com password: datafsae19!). The website uses cookies and maintains your sessions even if you close your browser(usually if you are using Chrome). The logout functionality is also implemented and it has a button on the main page for it.
 
+The goal of the first table, which shows the average speed per gear, computed on the server after every form entry, is to provide the user (engineering team) with the actual gear speeds. Gear speeds are a car parameter that the team tries to control and predict through design and simulation software but is only ultimately validated with this tool. This table is not editable and will simply be a view of the actual data that is stored in the server.
 
-Baseline Requirements
----
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows the entire dataset residing in the server's memory
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account.
-- Use of at least five [Express middleware packages](https://expressjs.com/en/resources/middleware.html). Explore! 
-- Basic authentication using the [Passport middleware](http://www.passportjs.org) for Express (this counts as one of your five middleware packages). We encourage using the Local strategy, but OAuth (Open Authentication) can also be used for additional technical achievement. The course staff cannot help you with the various flavors of OAuth strategies. YOU MUST PROVIDE US WITH ACCOUNT CREDENTIALS TO LOGIN TO YOUR APPLICATION IF YOU USE OAUTH. The course staff cannot be expected to have credentials for any particular OAuth service.
-- Persistent data storage in between server sessions. [lowdb](https://github.com/typicode/lowdb) is a suitable database package for this assignment and will be discussed in class.
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). This should do the bulk of your styling/CSS for you and be appropriate to your application. For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:
-
-HTML:
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two simple pages for this assignment, one that handles login / authentication, and one that contains the rest of your application. For this assignment, it is acceptable to simply create new user accounts upon login if none exist, however, you must alert your users to this fact. If you're not using OAuth 
-
-CSS:
-- CSS styling should primarily be provided by your chosen template/framework. Oftentimes a great deal of care has been put into designing CSS templates; don't override their stylesheets unless you are extremely confident in your graphic design capabilities. The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. See the [previous assignment](https://github.com/cs4241-19a/a2-shortstack) for reference.
-
-Node.js:
-- A server using Express, at least five pieces of Express middleware, and a persistent database (a flat file using lowdb is great).
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. A good potential starting point is to use the "hello-express" project template inside of Glitch; this appears as an option when you hit the "New Project" button. Use the work you did in the last assignment as a reference to implement functionality, as well as the notes from class on 9/9 and 9/12.
-2. If you developed your project locally, deploy your project to Glitch, and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch, it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourname` so we can find it.
-5. Fork this repository and modify the README to the specifications below. You do not need to include any of your project files in this repo (we will see those on Glitch), you only need to update and commit the README file.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-gitname-firstname-lastname`.
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch link e.g. http://a3-charlieroberts.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy / database you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why.
-  - include any modifications to the CSS framework you made via custom CSS you authored.
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does.
+The goal of the second table is to not only display every reading, but provide an interpreted way of looking at the wheel speed in RPM. Considering the cars maximum rpm is around 1000 rotations per minute, it displays a progress bar towards that number at every reading. The color of the progress bar indicates the need for gear shifting. Red/Orange are closer to the min and max rpms, which represent the need to shift gears down/up respectively. On the other hand, green and blue are on the middle of the spectrum and represent the rpm ranges when the car is at an ideal rpm and gear, with no need to shift. This table can help the design team with understanding shift timing but also the driver, in case it can be read dynamically during driving and after enough data has been inputed. This table shows all the data from the server and is persistent accross different sessions, as it is stored in lowdb. This data is also editable. The user can click in the speed, rpm, or gear fields to change them in any record in this table. Doing so will immediatly be reflected in the server storage as well as the aggregate data table. The user can also delete any rows by double clickling on them and confiming the action in the browser modal that pops up. Likewise, this change is immediately reflected in the other parts of the project. 
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
-- **Tech Achievement 2**: I used over ten Express middleware packages, enabling me to create a server that...
+- **Tech Achievement 1**: I used OAuth authentication via the Google strategy with LogOut included
+- **Tech Achievement 2**: Implemented Cookie sessions and CORS package to server/client in order to maintain sessions and users running
+- **Tech Achievement 3**: I used ten Express middleware packages, enabling me to create a server that is more professional and efficient, with controllable behaviors on the security/performance aspects.
+- **Tech Achievement 4**: Implemented the Bulma css framework alonside tabulator
+- **Tech Achievement 5**: Implemented the lowdb module effectively on the data aggregation task
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I tested my application using screen reading software, and found that...
-- **Design Achievement 2**: I followed best practices for accessibility, including providing alt attributes for images and using semantic HTML. There are no `<div>` or `<span>` elements in my document.
-- **Design Achievement 3**: We tested the application with n=X users, finding that...
+- **Design Achievement 1**: I tested my application with several field changes to the existing reading data and in between sessions
+- **Design Achievement 2**: I was able to show a unique html page for each user based on their google account, by customizing the welcome greeting
+- **Design Achievement 3**: Tested the row delete mechanism multiple times (double click) and had consistent responsiveness
+- **Design Achievement 4**: Used varied form input types
+- **Design Achievement 5**: Used varied layout and content elements from bulma (hero, sessions, boxes, tiles, fields, control, etc)
