@@ -8,6 +8,7 @@ const fs   = require( 'fs' ),
       passport = require('passport'),
       GoogleStrategy = require('passport-google-oauth').OAuth2Strategy, 
       cookieParser = require('cookie-parser'),
+      cors = require('cors');
       cookieSession = require('cookie-session');
 
 app.use(cookieSession({
@@ -15,11 +16,12 @@ app.use(cookieSession({
   keys: ['508']
 }));
 app.use(cookieParser());
+app.use(cors());
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 app.use(compression({level: 1}))
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
 app.use(helmet.referrerPolicy());
@@ -74,7 +76,6 @@ app.get('/api/user_data', function(req, res) {
       console.log("The user is not logged in")
       res.json({});
   } else {
-      console.log(req.session.passport.user)
       res.json({
           user: req.session.passport.user
       });
@@ -92,29 +93,50 @@ app.get('/', function(request, response) {
   }
 });
 
-app.post('/submit', passport.authenticate('google',
- { failureRedirect: '/' }),
- function(request, response){
+app.post('/submit',
+  function(request, response){
   
-  let dataString = ''
-
-  request.on( 'data', function( data ) {
-      dataString += data 
-  })
-
-  request.on( 'end', function() {
-    let reading = JSON.parse( dataString )
-
-    updateRecord(reading).then(function(resolve){
+    let reading = request.body
+    addRecord(reading).then(function(resolve){
       console.log(resolve)
 
       response.writeHeader( 200, { 'Content-Type': 'text/plain' })
       response.end("Ok");
-    });
-  })
-});
+    }).catch(err => console.log(err));
+  }, 
+  passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/userinfo.profile'], failureRedirect: '/' }));
 
-// listen for requests :)
+app.post('/update_delete',
+ function(request, response){
+  readings = request.body
+  updateRecord(readings.readings).then(function(resolve){
+    console.log(resolve)
+
+    response.writeHeader( 200, { 'Content-Type': 'text/plain' })
+    response.end("Ok");
+  }).catch(err => console.log(err))},
+  passport.authenticate('google',
+ { failureRedirect: '/', scope: ['https://www.googleapis.com/auth/userinfo.profile']}));
+
+app.get('/reading_data',
+  function(request, response){
+    readings = readingsdb.get("readings").value()
+    response.json(readings)
+  },
+  passport.authenticate('google',
+ { failureRedirect: '/', scope: ['https://www.googleapis.com/auth/userinfo.profile']})
+)
+
+app.get('/aggregate_data',
+  function(request, response){
+    aggr = readingsdb.get("aggregate").value()
+    response.json(aggr)
+  },
+  passport.authenticate('google',
+ { failureRedirect: '/', scope: ['https://www.googleapis.com/auth/userinfo.profile']})
+)
+
+// listen for requests
 const listener = app.listen(3000, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
@@ -131,7 +153,7 @@ const calculateAggr = function(data){
     "6th Gear":{"sum":0,"count":0},
   }
 
-  data.readings.forEach(re => {
+  data.forEach(re => {
     aggregate[re.gear].sum = Number(aggregate[re.gear].sum) + Number(re.speed)
     aggregate[re.gear].count = Number(aggregate[re.gear].count) + 1 
   });
@@ -146,24 +168,44 @@ const calculateAggr = function(data){
 
 }
 
-const updateRecord = function(reading){
+const addRecord = function(reading){
   return new Promise(resolve =>{
-    fs.readFile('public/data/carreadings.json', 'utf8', function updateFile(err, readings){
-      if (err){
-        console.log(err);
-      } else {
-        let readingsObj = JSON.parse(readings);
-        readingsObj.readings.push(reading);
-        aggr = calculateAggr(readingsObj)
-        readingsObj.aggregate = aggr
-        let json = JSON.stringify(readingsObj);
-        fs.writeFile('public/data/carreadings.json', json, 'utf8', function writeCallback(err){
-          if (err){
-            console.log(err);
-          }
-        });
-        resolve(readingsObj);
-      }
-    });
+    readingsdb.get("readings")
+      .push(reading)
+      .write();
+    
+    readings = readingsdb.get("readings")
+      .value()
+    aggr = calculateAggr(readings)
+    readingsdb.set("aggregate",aggr).write()
+    resolve(readingsdb.get("aggregate").value());
   })
 }
+
+const updateRecord = function(new_readings){
+  
+  return new Promise(resolve =>{
+    readingsdb.set("readings",new_readings)
+      .write();
+    
+    aggr = calculateAggr(new_readings)
+    readingsdb.set("aggregate",aggr).write()
+    resolve(readingsdb.get("aggregate").value());
+  })
+}
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+
+const adapter = new FileSync('db.json')
+const readingsdb = low(adapter)
+
+fs.readFile('public/data/carreadings_base.json', 'utf8', function updateFile(err, readings_base){
+  if (err){
+    console.log(err);
+  } else {
+    r_base = JSON.parse(readings_base);
+    readingsdb.defaults(r_base)
+      .write()
+  }
+});
+

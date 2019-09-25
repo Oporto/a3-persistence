@@ -1,30 +1,49 @@
 console.log("Welcome to assignment 2!")
 
 const genTable = function(data){
-    console.log(data)
     var table = new Tabulator("#readings-table", {
-        margin:40,
         data:data, //assign data to table
         layout:"fitColumns", //fit columns to width of table (optional)
+        selectable:"true",
+        rowDblClick:function(e, row){
+            var r = confirm("Are you sure you want to delete this row?");
+            if (r == true) {
+                row.delete()
+            }
+        },
         columns:[ //Define Table Columns
-            {title:"Speed (MPH)", field:"speed", width:140},
-            {title:"Rotations per Minute (0-1000)", field:"rpm", width:250, formatter: "progress", formatterParams: {
+            {title:"Speed (MPH)", field:"speed", editor:"input", width:140},
+            {title:"Rotations per Minute (0-1000)", field:"rpm", editor:"input", width:250, formatter: "progress", formatterParams: {
                 min:0,
                 max:1000,
                 color:["red","orange","green","blue", "green","orange", "red"],
                 legendColor:"#000000",
                 legendAlign:"center",
             }},
-            {title:"Gear", field:"gear", width:120},
+            {title:"Gear", field:"gear", editor:"select",width:120, editorParams:{
+                "Park":"Park",
+                "Reverse":"Reverse",
+                "1st Gear":"1st Gear",
+                "2nd Gear":"2nd Gear",
+                "3rd Gear":"3rd Gear",
+                "4th Gear":"4th Gear",
+                "5th Gear":"5th Gear",
+                "6th Gear":"6th Gear"
+            }},
             {title:"Timestamp", field:"datetime", sorter:"date", align:"center", width:290},
+
         ],
+        
+        dataEdited:function(data){
+            console.log(data)
+            update(data)
+        },
    });    
 }
 
 const agrTable = function(data){
     var agrTable = new Tabulator("#aggregate-table",{
         height: 280,
-        margin: 50,
         data:data,
         layout:"fitColumns",
         columns:[
@@ -36,15 +55,42 @@ const agrTable = function(data){
 
 const getReadings = function(){
 
-    fetch('data/carreadings.json')
+    fetch('/reading_data')
     .then(response => response.json())
     .then(data => {
         console.log(data)
-        genTable(data.readings)
-        agrTable(data.aggregate)
+        genTable(data)
     })
     .catch(err => {
         console.log(err)
+    })
+
+    fetch('/aggregate_data')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        agrTable(data)
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
+
+const update = function(data){
+    json = {
+        readings:data
+    }
+    json_st = JSON.stringify(json)
+    fetch( '/update_delete', {
+        method:'POST',
+        body:json_st,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then( function( response ) {
+        console.log(response)
+        getReadings()
     })
 }
 
@@ -61,11 +107,14 @@ const submit = function( e ) {
             gear: gear.value,
             datetime: (new Date()).toJSON()
         },
-        body = JSON.stringify( json )
+        json_st = JSON.stringify( json )
 
     fetch( '/submit', {
         method:'POST',
-        body 
+        body: json_st,
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then( function( response ) {
         console.log(response)

@@ -1,0 +1,116 @@
+{
+  "aggregate": [
+    {
+      "gear": "Park",
+      "avgspeed": 0
+    },
+    {
+      "gear": "Reverse",
+      "avgspeed": -15
+    },
+    {
+      "gear": "1st Gear",
+      "avgspeed": 13
+    },
+    {
+      "gear": "2nd Gear",
+      "avgspeed": 25.5
+    },
+    {
+      "gear": "3rd Gear",
+      "avgspeed": 30
+    },
+    {
+      "gear": "4th Gear",
+      "avgspeed": 42.4
+    },
+    {
+      "gear": "5th Gear",
+      "avgspeed": null
+    },
+    {
+      "gear": "6th Gear",
+      "avgspeed": 70
+    }
+  ],
+  "readings": [
+    {
+      "speed": "30",
+      "rpm": "400",
+      "gear": "3rd Gear",
+      "datetime": "2019-09-09T01:55:18.487Z"
+    },
+    {
+      "speed": "23",
+      "rpm": "350",
+      "gear": "2nd Gear",
+      "datetime": "2019-09-09T01:55:34.488Z"
+    },
+    {
+      "speed": "15",
+      "rpm": "500",
+      "gear": "1st Gear",
+      "datetime": "2019-09-09T01:55:42.236Z"
+    },
+    {
+      "speed": "0",
+      "rpm": "100",
+      "gear": "Park",
+      "datetime": "2019-09-09T01:55:51.024Z"
+    },
+    {
+      "speed": "-15",
+      "rpm": "200",
+      "gear": "Reverse",
+      "datetime": "2019-09-09T01:56:05.851Z"
+    },
+    {
+      "speed": "35",
+      "rpm": "200",
+      "gear": "4th Gear",
+      "datetime": "2019-09-09T01:56:25.484Z"
+    },
+    {
+      "speed": "70",
+      "rpm": "500",
+      "gear": "6th Gear",
+      "datetime": "2019-09-09T01:57:00.523Z"
+    },
+    {
+      "speed": "28",
+      "rpm": "900",
+      "gear": "2nd Gear",
+      "datetime": "2019-09-09T01:57:44.331Z"
+    },
+    {
+      "speed": "48",
+      "rpm": "930",
+      "gear": "4th Gear",
+      "datetime": "2019-09-09T01:58:02.926Z"
+    },
+    {
+      "speed": "40",
+      "rpm": "500",
+      "gear": "4th Gear",
+      "datetime": "2019-09-09T02:01:01.548Z"
+    },
+    {
+      "speed": "45",
+      "rpm": "690",
+      "gear": "4th Gear",
+      "datetime": "2019-09-09T02:13:09.692Z"
+    },
+    {
+      "speed": "11",
+      "rpm": "300",
+      "gear": "1st Gear",
+      "datetime": "2019-09-24T14:32:35.769Z"
+    },
+    {
+      "speed": "44",
+      "rpm": "430",
+      "gear": "4th Gear",
+      "datetime": "2019-09-25T18:30:50.907Z"
+    }
+  ]
+}
