@@ -70,13 +70,13 @@ app.get('/logout', (req, res) => {
 
 app.get('/api/user_data', function(req, res) {
 
-  if (req.user === undefined) {
-      // The user is not logged in
+  if (req.session.passport.user === undefined) {
+      console.log("The user is not logged in")
       res.json({});
   } else {
-      console.log(req.user)
+      console.log(req.session.passport.user)
       res.json({
-          user: req.user
+          user: req.session.passport.user
       });
   }
 });

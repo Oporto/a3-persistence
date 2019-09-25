@@ -76,10 +76,10 @@ const submit = function( e ) {
 }
 
 window.onload = function() {
-    fetch('data/carreadings.json')
+    fetch('/api/user_data')
     .then(response => response.json())
     .then(data =>{
-        this.document.getElementById("intro").innerHTML = "Welcome to the data logger, " + data.user.displayName
+        this.document.getElementById("intro").innerHTML = "Welcome to the data logger, " + data.user.profile.displayName
     })
     const button = document.querySelector( 'button' )
     button.onclick = submit
